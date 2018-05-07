@@ -4,8 +4,12 @@
   "main": "dist/index.js",
   "license": "MIT",
   "dependencies": {
+    "dateformat": "^3.0.3",
+    "string-format": "^1.0.0"
   },
   "devDependencies": {
+    "@types/dateformat": "^1.0.1",
+    "@types/jest": "^22.2.3",
     "clean-webpack-plugin": "^0.1.17",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^21.2.1",
