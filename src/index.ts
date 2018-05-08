@@ -13,18 +13,19 @@ interface FormatVariables {
 }
 
 export class SimpleLogger {
-    private formatterString: string;
+    static defaultFormatString = '{HH}:{MM}:{ss} - {module} - {message}';
+    private formatString: string;
     private moduleName: string;
 
     constructor(moduleName: string) {
-        this.formatterString = '';
+        this.formatString = ''; // Hack for older TS version
         this.initDefaults();
         this.moduleName = moduleName;
     }
 
     initDefaults() {
         // default format string
-        this.formatterString = '{HH}:{MM}:{ss} - {module} - {message}';
+        this.formatString = SimpleLogger.defaultFormatString;
     }
 
     getDefaultFormatVariables(date?: Date): FormatVariables {
@@ -81,7 +82,7 @@ export class SimpleLogger {
     }
 
     setFormatString(newFormatString: string) {
-        this.formatterString = newFormatString;
+        this.formatString = newFormatString;
     }
 
     getFormattedMessage(coreMessage: string): string {
@@ -90,7 +91,7 @@ export class SimpleLogger {
         formatVariables['message'] = coreMessage;
         // Add fixURL here
 
-        const formattedMessage = stringFormat(this.formatterString, formatVariables);
+        const formattedMessage = stringFormat(this.formatString, formatVariables);
 
         return formattedMessage;
     }

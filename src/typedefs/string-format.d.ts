@@ -1,3 +1,4 @@
 declare module 'string-format' {
-    exports = function format(formatString: string, ...formatInput: any[]);
+    declare function format(formatString: string, ...formatInput: any[]);
+    export = format;
 }
