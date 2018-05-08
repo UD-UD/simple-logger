@@ -23,12 +23,12 @@ export class SimpleLogger {
         this.moduleName = moduleName;
     }
 
-    initDefaults() {
+    private initDefaults() {
         // default format string
         this.formatString = SimpleLogger.defaultFormatString;
     }
 
-    getDefaultFormatVariables(date?: Date): FormatVariables {
+    private getDefaultFormatVariables(date?: Date): FormatVariables {
         if (date === undefined) {
             date = new Date();
         }
