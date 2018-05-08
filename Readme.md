@@ -9,10 +9,10 @@ import Logger from 'logger';
 const l = new Logger('testModule');
 
 // Log methods
-
-l.debug('message'); // 11:46:07 - testModule - message
-l.warn('message'); // 11:46:07 - testModule - message
-l.error('message'); // 11:46:07 - testModule - message
+l.log('message'); // 11:46:07 - testModule - message
+l.debug('message'); // Same
+l.warn('message'); // Same
+l.error('message'); // Same
 
 // Change format string
 l.setFormatString('Module is: {module} - {message} - at time {HH}:{MM}:{ss}');
