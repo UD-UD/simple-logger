@@ -277,5 +277,20 @@ describe('Simple logger', () => {
     spyConsoleLog.mockRestore();
   })
 
+  
+  it('should give correct output string from `getFormattedMessage` method', () => {
+    // Setup
+    MockDate.set(new Date(2010, 3, 2, 13, 40, 50));
+
+    // Do stuff
+    const logger = new SimpleLogger('test');
+    logger.setFormatString('{shortDate}:{HH} - {message}');
+
+    // Assert
+    expect(logger.getFormattedMessage('Hi')).toBe('4/2/10:13 - Hi');
+
+    // Cleanup
+  })
+
 })
 
