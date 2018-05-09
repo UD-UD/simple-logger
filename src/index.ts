@@ -2,10 +2,10 @@ import stringFormat = require('string-format');
 import * as dateFormat from 'dateformat';
 
 export enum LogLevel {
-    debug = 100,
-    log = 200,
-    warn = 300,
-    error = 400
+    DEBUG = 100,
+    LOG = 200,
+    WARN = 300,
+    ERROR = 400
 }
 
 interface FormatVariables {
@@ -14,14 +14,22 @@ interface FormatVariables {
 
 export class SimpleLogger {
     static defaultFormatString = '{HH}:{MM}:{ss} - {module} - {message}';
+    static logLevel: LogLevel = LogLevel.LOG;
     private formatString: string;
     private moduleName: string;
-    private logLevel: LogLevel = LogLevel.log;
 
     constructor(moduleName: string) {
         this.formatString = ''; // Hack for older TS version
         this.initDefaults();
         this.moduleName = moduleName;
+    }
+
+    static setLogLevel(logLevel: LogLevel) {
+        this.logLevel = logLevel;
+    }
+    
+    static resetLogLevel() {
+        this.logLevel = LogLevel.LOG;
     }
 
     private initDefaults() {
@@ -86,10 +94,6 @@ export class SimpleLogger {
         this.formatString = newFormatString;
     }
 
-    setLogLevel(logLevel: LogLevel) {
-        this.logLevel = logLevel;
-    }
-
     getFormattedMessage(coreMessage: string): string {
         const formatVariables = this.getDefaultFormatVariables();
         formatVariables['module'] = this.moduleName;
@@ -111,7 +115,7 @@ export class SimpleLogger {
     }
 
     public log(coreMessage: string) {
-        if (this.logLevel <= LogLevel.log) {
+        if (SimpleLogger.logLevel <= LogLevel.LOG) {
             this._log(coreMessage);
         }
     }
@@ -124,8 +128,8 @@ export class SimpleLogger {
         }
         const formattedMessage = this.getFormattedMessage(coreMessage);
 
-        this.preDrawRaw(coreMessage, undefined, LogLevel.log, cancelFn);
-        this.preDraw(formattedMessage, LogLevel.log, cancelFn);
+        this.preDrawRaw(coreMessage, undefined, LogLevel.LOG, cancelFn);
+        this.preDraw(formattedMessage, LogLevel.LOG, cancelFn);
 
         if (!cancelDraw) {
             console.log(formattedMessage);
@@ -133,7 +137,7 @@ export class SimpleLogger {
     }
 
     public debug(coreMessage: string) {
-        if (this.logLevel <= LogLevel.debug) {
+        if (SimpleLogger.logLevel <= LogLevel.DEBUG) {
             this._debug(coreMessage);
         }
     }
@@ -146,8 +150,8 @@ export class SimpleLogger {
         }
         const formattedMessage = this.getFormattedMessage(coreMessage);
 
-        this.preDrawRaw(coreMessage, undefined, LogLevel.debug, cancelFn);
-        this.preDraw(formattedMessage, LogLevel.debug, cancelFn);
+        this.preDrawRaw(coreMessage, undefined, LogLevel.DEBUG, cancelFn);
+        this.preDraw(formattedMessage, LogLevel.DEBUG, cancelFn);
 
         if (!cancelDraw) {
             console.debug(formattedMessage);
@@ -155,7 +159,7 @@ export class SimpleLogger {
     }
 
     public warn(coreMessage: string) {
-        if (this.logLevel <= LogLevel.warn) {
+        if (SimpleLogger.logLevel <= LogLevel.WARN) {
             this._warn(coreMessage);
         }
     }
@@ -168,8 +172,8 @@ export class SimpleLogger {
         }
         const formattedMessage = this.getFormattedMessage(coreMessage);
 
-        this.preDrawRaw(coreMessage, undefined, LogLevel.warn, cancelFn);
-        this.preDraw(formattedMessage, LogLevel.warn, cancelFn);
+        this.preDrawRaw(coreMessage, undefined, LogLevel.WARN, cancelFn);
+        this.preDraw(formattedMessage, LogLevel.WARN, cancelFn);
 
         if (!cancelDraw) {
             console.warn(formattedMessage);
@@ -177,7 +181,7 @@ export class SimpleLogger {
     }
 
     public error(coreMessage: string) {
-        if (this.logLevel <= LogLevel.error) {
+        if (SimpleLogger.logLevel <= LogLevel.ERROR) {
             this._error(coreMessage);
         }
     }
@@ -190,8 +194,8 @@ export class SimpleLogger {
         }
         const formattedMessage = this.getFormattedMessage(coreMessage);
 
-        this.preDrawRaw(coreMessage, undefined, LogLevel.error, cancelFn);
-        this.preDraw(formattedMessage, LogLevel.error, cancelFn);
+        this.preDrawRaw(coreMessage, undefined, LogLevel.ERROR, cancelFn);
+        this.preDraw(formattedMessage, LogLevel.ERROR, cancelFn);
 
         if (!cancelDraw) {
             console.error(formattedMessage);

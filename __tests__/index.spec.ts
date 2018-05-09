@@ -11,7 +11,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.log('Hello world');
 
     // Assert
@@ -41,7 +41,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
 
     logger.debug('Hello world');
     logger.log('Hello world');
@@ -91,7 +91,7 @@ describe('Simple logger', () => {
     // Do stuff
     const logger = new SimpleLogger('test');
     logger.log('Hello world');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
 
     // Assert
     expect(spyConsoleLog).toHaveBeenCalled();
@@ -103,6 +103,7 @@ describe('Simple logger', () => {
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
     MockDate.reset();
+    SimpleLogger.resetLogLevel();
   })
 
   it('should allow setting blank format string', () => {
@@ -112,7 +113,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('');
     logger.log('Hello world');
 
@@ -125,7 +126,7 @@ describe('Simple logger', () => {
     // Cleanup
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
-
+    SimpleLogger.resetLogLevel();
   })
 
   it('should allow setting static format string', () => {
@@ -135,7 +136,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('Something');
     logger.log('Hello world');
 
@@ -148,7 +149,7 @@ describe('Simple logger', () => {
     // Cleanup
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
-
+    SimpleLogger.resetLogLevel();
   })
 
   it('should allow setting basic format string', () => {
@@ -158,7 +159,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('Logging {message}');
     logger.log('Hello world');
 
@@ -171,7 +172,7 @@ describe('Simple logger', () => {
     // Cleanup
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
-
+    SimpleLogger.resetLogLevel();
   })
 
   it('should allow setting multi placeholder format string', () => {
@@ -181,7 +182,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('Logging {message} from module {module}');
     logger.log('Hello world');
 
@@ -194,7 +195,7 @@ describe('Simple logger', () => {
     // Cleanup
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
-
+    SimpleLogger.resetLogLevel();
   })
 
   it('should allow setting repeating placeholder format string', () => {
@@ -204,7 +205,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('{message}, again {message}');
     logger.log('Hi');
 
@@ -217,6 +218,7 @@ describe('Simple logger', () => {
     // Cleanup
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
+    SimpleLogger.resetLogLevel();
   })
 
   it('should work with format string containing basic date masks', () => {
@@ -227,7 +229,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('Time is {hh} on {mm}/{dd} - {message}');
     logger.log('Hi');
 
@@ -240,6 +242,7 @@ describe('Simple logger', () => {
     // Cleanup
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
+    SimpleLogger.resetLogLevel();
   })
   
   it('should work with format string containing named date format', () => {
@@ -250,7 +253,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('{shortDate} - {message}');
     logger.log('Hi');
 
@@ -263,6 +266,7 @@ describe('Simple logger', () => {
     // Cleanup
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
+    SimpleLogger.resetLogLevel();
   })
   
   it('should work with format string containing both date mask and named format', () => {
@@ -273,7 +277,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('{shortDate}:{HH} - {message}');
     logger.log('Hi');
 
@@ -286,6 +290,7 @@ describe('Simple logger', () => {
     // Cleanup
     spyConsoleLog.mockReset();
     spyConsoleLog.mockRestore();
+    SimpleLogger.resetLogLevel();
   })
 
   it('should give correct output string from `getFormattedMessage` method', () => {
@@ -294,13 +299,14 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.debug);
+    SimpleLogger.setLogLevel(LogLevel.DEBUG);
     logger.setFormatString('{shortDate}:{HH} - {message}');
 
     // Assert
     expect(logger.getFormattedMessage('Hi')).toBe('4/2/10:13 - Hi');
 
     // Cleanup
+    SimpleLogger.resetLogLevel();
   })
   
   it('should respect default log level', () => {
@@ -328,7 +334,7 @@ describe('Simple logger', () => {
     spyConsoleLog.mockRestore();
     spyConsoleDebug.mockReset();
     spyConsoleDebug.mockRestore();
-
+    SimpleLogger.resetLogLevel();
   })
     
   it('should respect custom log level', () => {
@@ -344,7 +350,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
-    logger.setLogLevel(LogLevel.warn);
+    SimpleLogger.setLogLevel(LogLevel.WARN);
 
     logger.debug('Hello world');
     logger.log('Hello world');
@@ -375,7 +381,7 @@ describe('Simple logger', () => {
     spyConsoleWarn.mockRestore();
     spyConsoleError.mockReset();
     spyConsoleError.mockRestore();
-
+    SimpleLogger.resetLogLevel();
   })
 
 })
