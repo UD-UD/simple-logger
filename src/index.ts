@@ -1,7 +1,7 @@
 import stringFormat = require('string-format');
 import * as dateFormat from 'dateformat';
 
-enum LogLevel {
+export enum LogLevel {
     debug = 100,
     log = 200,
     warn = 300,
