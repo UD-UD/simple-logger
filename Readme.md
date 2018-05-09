@@ -60,4 +60,4 @@ Some examples of supported date format strings are:
 
 1. `"{default}"` - Sat Jun 09 2007 17:46:21
 2. `"{HH}:{MM}:{ss}"` - 11:48:57
-3. `"{shortDate} ({W}th week of the year)"` - 6/9/07 (34th week of the year) 
+3. `"{shortDate} ({W}th week of the year)"` - 6/9/07 (34th week of the year)
