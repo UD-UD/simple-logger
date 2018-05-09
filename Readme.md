@@ -9,10 +9,10 @@ import { SimpleLogger, LogLevel } from 'simple-logger';
 const l = new SimpleLogger('testModule');
 
 // Log methods
-l.log('message'); // 11:46:07 - testModule - message
-l.debug('message'); // Same
-l.warn('message'); // Same
-l.error('message'); // Same
+l.log('message'); // 10:40:50::testModule::LOG:: message
+l.debug('message'); // 10:40:50::testModule::DEBUG:: message
+l.warn('message'); // 10:40:50::testModule::WARN:: message
+l.error('message'); // 10:40:50::testModule::ERROR:: message
 
 // Change format string
 l.setFormatString('Module is: {module} - {message} - at time {HH}:{MM}:{ss}');
@@ -45,8 +45,10 @@ We pass in a formatting object with these keys:
 
 1. `module` - Module name, passed in the Logger constructor.
 2. `message` - String passed in log / warn / error methods.
-3. Timestamp related keys - Documented below
+3. `logLevel` - Log level in upper case, eg. DEBUG.
+4. Timestamp related keys - Documented below
 
+Default format string is `'{HH}:{MM}:{ss}::{module}::{logLevel}:: {message}'`
 
 #### [dateformat](https://www.npmjs.com/package/dateformat) -
 

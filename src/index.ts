@@ -9,11 +9,11 @@ export enum LogLevel {
 }
 
 interface FormatVariables {
-    [variableName: string]: string;
+    [variableName: string]: string|number;
 }
 
 export class SimpleLogger {
-    static defaultFormatString = '{HH}:{MM}:{ss} - {module} - {message}';
+    static defaultFormatString = '{HH}:{MM}:{ss}::{module}::{logLevel}:: {message}';
     static logLevel: LogLevel = LogLevel.LOG;
     private formatString: string;
     private moduleName: string;
@@ -94,10 +94,11 @@ export class SimpleLogger {
         this.formatString = newFormatString;
     }
 
-    getFormattedMessage(coreMessage: string): string {
+    getFormattedMessage(coreMessage: string, logLevel:LogLevel): string {
         const formatVariables = this.getDefaultFormatVariables();
         formatVariables['module'] = this.moduleName;
         formatVariables['message'] = coreMessage;
+        formatVariables['logLevel'] = LogLevel[logLevel];
         // Add fixURL here
 
         const formattedMessage = stringFormat(this.formatString, formatVariables);
@@ -126,7 +127,7 @@ export class SimpleLogger {
         const cancelFn = function () {
             cancelDraw = true;
         }
-        const formattedMessage = this.getFormattedMessage(coreMessage);
+        const formattedMessage = this.getFormattedMessage(coreMessage,LogLevel.LOG);
 
         this.preDrawRaw(coreMessage, undefined, LogLevel.LOG, cancelFn);
         this.preDraw(formattedMessage, LogLevel.LOG, cancelFn);
@@ -148,7 +149,7 @@ export class SimpleLogger {
         const cancelFn = function () {
             cancelDraw = true;
         }
-        const formattedMessage = this.getFormattedMessage(coreMessage);
+        const formattedMessage = this.getFormattedMessage(coreMessage,LogLevel.DEBUG);
 
         this.preDrawRaw(coreMessage, undefined, LogLevel.DEBUG, cancelFn);
         this.preDraw(formattedMessage, LogLevel.DEBUG, cancelFn);
@@ -170,7 +171,7 @@ export class SimpleLogger {
         const cancelFn = function () {
             cancelDraw = true;
         }
-        const formattedMessage = this.getFormattedMessage(coreMessage);
+        const formattedMessage = this.getFormattedMessage(coreMessage,LogLevel.WARN);
 
         this.preDrawRaw(coreMessage, undefined, LogLevel.WARN, cancelFn);
         this.preDraw(formattedMessage, LogLevel.WARN, cancelFn);
@@ -192,7 +193,7 @@ export class SimpleLogger {
         const cancelFn = function () {
             cancelDraw = true;
         }
-        const formattedMessage = this.getFormattedMessage(coreMessage);
+        const formattedMessage = this.getFormattedMessage(coreMessage,LogLevel.ERROR);
 
         this.preDrawRaw(coreMessage, undefined, LogLevel.ERROR, cancelFn);
         this.preDraw(formattedMessage, LogLevel.ERROR, cancelFn);

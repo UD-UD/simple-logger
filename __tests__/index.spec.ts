@@ -97,7 +97,7 @@ describe('Simple logger', () => {
     expect(spyConsoleLog).toHaveBeenCalled();
     expect(spyConsoleLog).toHaveBeenCalledTimes(1);
     expect(spyConsoleLog.mock.calls[0][0]).toBeString();
-    expect(spyConsoleLog.mock.calls[0][0]).toBe('10:40:50 - test - Hello world');
+    expect(spyConsoleLog.mock.calls[0][0]).toBe('10:40:50::test::LOG:: Hello world');
 
     // Cleanup
     spyConsoleLog.mockReset();
@@ -303,7 +303,7 @@ describe('Simple logger', () => {
     logger.setFormatString('{shortDate}:{HH} - {message}');
 
     // Assert
-    expect(logger.getFormattedMessage('Hi')).toBe('4/2/10:13 - Hi');
+    expect(logger.getFormattedMessage('Hi', LogLevel.DEBUG)).toBe('4/2/10:13 - Hi');
 
     // Cleanup
     SimpleLogger.resetLogLevel();
