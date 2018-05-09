@@ -1,6 +1,6 @@
 import 'jest-extended';
 import MockDate = require('mockdate');
-import { SimpleLogger } from '../src/index';
+import { SimpleLogger, LogLevel } from '../src/index';
 
 describe('Simple logger', () => {
 
@@ -11,6 +11,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.log('Hello world');
 
     // Assert
@@ -40,6 +41,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
 
     logger.debug('Hello world');
     logger.log('Hello world');
@@ -89,6 +91,7 @@ describe('Simple logger', () => {
     // Do stuff
     const logger = new SimpleLogger('test');
     logger.log('Hello world');
+    logger.setLogLevel(LogLevel.debug);
 
     // Assert
     expect(spyConsoleLog).toHaveBeenCalled();
@@ -109,6 +112,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('');
     logger.log('Hello world');
 
@@ -131,6 +135,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('Something');
     logger.log('Hello world');
 
@@ -153,6 +158,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('Logging {message}');
     logger.log('Hello world');
 
@@ -175,6 +181,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('Logging {message} from module {module}');
     logger.log('Hello world');
 
@@ -197,6 +204,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('{message}, again {message}');
     logger.log('Hi');
 
@@ -219,6 +227,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('Time is {hh} on {mm}/{dd} - {message}');
     logger.log('Hi');
 
@@ -241,6 +250,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('{shortDate} - {message}');
     logger.log('Hi');
 
@@ -263,6 +273,7 @@ describe('Simple logger', () => {
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('{shortDate}:{HH} - {message}');
     logger.log('Hi');
 
@@ -277,19 +288,94 @@ describe('Simple logger', () => {
     spyConsoleLog.mockRestore();
   })
 
-  
   it('should give correct output string from `getFormattedMessage` method', () => {
     // Setup
     MockDate.set(new Date(2010, 3, 2, 13, 40, 50));
 
     // Do stuff
     const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.debug);
     logger.setFormatString('{shortDate}:{HH} - {message}');
 
     // Assert
     expect(logger.getFormattedMessage('Hi')).toBe('4/2/10:13 - Hi');
 
     // Cleanup
+  })
+  
+  it('should respect default log level', () => {
+    // Setup
+    const spyConsoleLog = jest.spyOn(console, 'log')
+    spyConsoleLog.mockImplementation(() => {/*noop*/ });
+    const spyConsoleDebug = jest.spyOn(console, 'debug')
+    spyConsoleDebug.mockImplementation(() => {/*noop*/ });
+
+    // Do stuff
+    const logger = new SimpleLogger('test');
+    logger.log('Hello world');
+    logger.debug('Hello world');
+
+    // Assert
+    expect(spyConsoleLog).toHaveBeenCalled();
+    expect(spyConsoleLog).toHaveBeenCalledTimes(1);
+    expect(spyConsoleLog.mock.calls[0][0]).toBeString();
+
+    expect(spyConsoleDebug).not.toHaveBeenCalled();
+    expect(spyConsoleDebug).toHaveBeenCalledTimes(0);
+    
+    // Cleanup
+    spyConsoleLog.mockReset();
+    spyConsoleLog.mockRestore();
+    spyConsoleDebug.mockReset();
+    spyConsoleDebug.mockRestore();
+
+  })
+    
+  it('should respect custom log level', () => {
+    // Setup
+    const spyConsoleDebug = jest.spyOn(console, 'debug')
+    spyConsoleDebug.mockImplementation(() => {/*noop*/ });
+    const spyConsoleLog = jest.spyOn(console, 'log')
+    spyConsoleLog.mockImplementation(() => {/*noop*/ });
+    const spyConsoleWarn = jest.spyOn(console, 'warn')
+    spyConsoleWarn.mockImplementation(() => {/*noop*/ });
+    const spyConsoleError = jest.spyOn(console, 'error')
+    spyConsoleError.mockImplementation(() => {/*noop*/ });
+
+    // Do stuff
+    const logger = new SimpleLogger('test');
+    logger.setLogLevel(LogLevel.warn);
+
+    logger.debug('Hello world');
+    logger.log('Hello world');
+    logger.warn('Hello world');
+    logger.error('Hello world');
+
+    // Assert
+    expect(spyConsoleDebug).not.toHaveBeenCalled();
+    expect(spyConsoleDebug).toHaveBeenCalledTimes(0);
+
+    expect(spyConsoleLog).not.toHaveBeenCalled();
+    expect(spyConsoleLog).toHaveBeenCalledTimes(0);
+    
+    expect(spyConsoleWarn).toHaveBeenCalled();
+    expect(spyConsoleWarn).toHaveBeenCalledTimes(1);
+    expect(spyConsoleWarn.mock.calls[0][0]).toBeString();
+    
+    expect(spyConsoleError).toHaveBeenCalled();
+    expect(spyConsoleError).toHaveBeenCalledTimes(1);
+    expect(spyConsoleError.mock.calls[0][0]).toBeString();
+    
+    // Cleanup
+    spyConsoleLog.mockReset();
+    spyConsoleLog.mockRestore();
+    spyConsoleDebug.mockReset();
+    spyConsoleDebug.mockRestore();
+    spyConsoleWarn.mockReset();
+    spyConsoleWarn.mockRestore();
+    spyConsoleError.mockReset();
+    spyConsoleError.mockRestore();
+
   })
 
 })
