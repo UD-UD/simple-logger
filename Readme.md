@@ -4,9 +4,9 @@
 
 ```js
 
-import Logger from 'logger';
+import { SimpleLogger, LogLevel } from 'simple-logger';
 
-const l = new Logger('testModule');
+const l = new SimpleLogger('testModule');
 
 // Log methods
 l.log('message'); // 11:46:07 - testModule - message
@@ -18,6 +18,14 @@ l.error('message'); // Same
 l.setFormatString('Module is: {module} - {message} - at time {HH}:{MM}:{ss}');
 
 l.debug('Hello world'); // Module is: testModule - Hello world - at time 11:48:57
+
+// Change log level 
+SimpleLogger.setLogLevel(LogLevel.warn);
+
+l.debug('Hello world'); // No log
+
+// Reset log level
+SimpleLogger.resetLogLevel();
 
 ```
 
